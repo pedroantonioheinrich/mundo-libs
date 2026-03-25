@@ -5,15 +5,22 @@ header{
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-top: 30px;
+    padding: 20px;
 }
+
+#icon-img{
+    width: 40px;
+}
+
 h1{
     color: var(--h1-color);
-    font-size: 55px;
+    font-size: 70px;
     font-weight: 900;
+    margin: 0;
+    padding: 0;
 }
 h2{
-    width: 500px;
+    width: 30%;
     color: var(--p2-color);
     display: flex;
     justify-content: center;
@@ -40,19 +47,4 @@ h2{
     margin: 15px;
 }
 
-#h1-img-box{
-    width: 500px;
-    height: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 150px;
-}
 
-
-#icon-img{
-    width: 100px;
-    rotate: -18deg;
-    padding-bottom: 15px;
-    margin: 0;
-}

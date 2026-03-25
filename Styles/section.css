@@ -10,7 +10,7 @@
 
 .search-bar-box{
     background-color: var(--elements-color);
-    width: 650px;
+    width: 40%;
     height: 40px;
     display: flex;
     justify-content: space-evenly;
@@ -37,7 +37,7 @@
 
 #search-bar{
     background-color: transparent;
-    width: 600px;
+    width: 100%;
     height: 60px;
     padding-left: 15px;
     font-size: 18px;
@@ -47,9 +47,12 @@
 
 
 .indexed-tags{
-    width: 63.5rem;
+    width: 62%;
     height: 80px;
-    padding: 30px 10px 15px 10px;
+    padding: 15px;
+    margin: 20px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .tags{
@@ -63,8 +66,8 @@
     text-decoration: none;
     font-size: 14px;
     transition: ease-in-out 0.5s;
-    margin-left: 8px;
-    margin-right: 8px;
+    margin: 2px;
+    
 }
 .tags:hover{
     border: 1px solid var(--h1-color);
@@ -84,7 +87,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap:wrap;
-    justify-content: flex-start;
+    justify-content:center;
     align-items: center;
 }
 
@@ -147,3 +150,5 @@
 .card-tag-category:hover{
     border: 1px solid var(--h1-color);
 }
+
+
