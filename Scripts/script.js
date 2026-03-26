@@ -17,8 +17,19 @@ let data = [{
         {cmdName: "", cmdDescription: "", cmdCode: "", cmdOutput:"", }
     ]
 
-},
+},{
+    icon: "💻",
+    id: "1",
+    name: "Argparse",
+    category: "CLI",
+    description:"O módulo argparse é a ferramenta padrão do Python para criar interfaces de linha de comando (CLI) de forma elegante e robusta. Ele permite definir argumentos, opções, subcomandos, gerar mensagens de ajuda automaticamente e tratar erros de entrada. Este manual cobre desde o básico até tópicos avançados, com exemplos práticos.",
+    installCmd: "pip install argparse",
+    importCmd: "import argparse",
+    commands : [
+        {cmdName: "", cmdDescription: "", cmdCode: "", cmdOutput:"", }
+    ]
 
+},
 {
     icon: "📃",
     id: "2",
@@ -191,37 +202,55 @@ let data = [{
 ]
 
 
-data.forEach((lib)=>{
-    const newCard = document.createElement('div')
-    newCard.classList.add("card-container")
-    newCard.innerHTML = `
+
+function renderCards(dadosParaExibir) {
+    container.innerHTML = ""
+    
+    dadosParaExibir.forEach((lib) => {
+        const newCard = document.createElement('div')
+        newCard.classList.add("card-container")
+        newCard.innerHTML = `
             <div class="card-img">${lib.icon}</div>
             <div class="card-description">
-                <p>${lib.description.slice(0,80)}...</p>
+                <p>${lib.description.slice(0, 80)}...</p>
             </div>
             <div class="card-tag-category">${lib.category}</div>
-            `
-    
-    newCard.addEventListener('click', ()=>{
-        window.location.href = `details.html?id=${lib.id}`
-    })
-    
-    if (!tagsArr.includes(lib.category)){
+        `;
+
+        newCard.addEventListener('click', () => {
+            window.location.href = `details.html?id=${lib.id}`
+        });
+
+        container.appendChild(newCard)
+    });
+}
+
+renderCards(data)
+
+data.forEach((lib) => {
+    if (!tagsArr.includes(lib.category)) {
         tagsArr.push(lib.category)
+        
         const newTag = document.createElement('div')
         newTag.classList.add("tags")
-        newTag.textContent = `${lib.category}`
-        newTag.addEventListener('click', ()=>{
-            window.location.href = `details.html?id=${lib.id}`
-        })
+        newTag.textContent = lib.category
+        
+        newTag.addEventListener('click', (e) => {
+            e.stopPropagation()
+            
+            const filtered = data.filter(card => card.category === lib.category);
+            span.textContent = filtered.length
+            renderCards(filtered)
+            
+        });
+        
         tagIndexed.appendChild(newTag)
     }
-    container.appendChild(newCard)
-
-})
+});
 
 
 span.textContent = data.length
+
 
 
 
