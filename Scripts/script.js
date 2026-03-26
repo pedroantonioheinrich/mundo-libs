@@ -215,17 +215,27 @@ function renderCards(dadosParaExibir) {
                 <p>${lib.description.slice(0, 80)}...</p>
             </div>
             <div class="card-tag-category">${lib.category}</div>
-        `;
+        `
 
         newCard.addEventListener('click', () => {
             window.location.href = `details.html?id=${lib.id}`
-        });
+        })
 
         container.appendChild(newCard)
-    });
+    })
 }
 
 renderCards(data)
+
+const btnAll = document.createElement('div')
+btnAll.classList.add("tags", "tag-all")
+btnAll.textContent = "🚀 Ver Todas"
+btnAll.addEventListener('click', () => {
+    span.textContent = data.length
+    btnAll.classList.add('active')
+    renderCards(data)
+}); 
+tagIndexed.appendChild(btnAll)
 
 data.forEach((lib) => {
     if (!tagsArr.includes(lib.category)) {
@@ -238,15 +248,16 @@ data.forEach((lib) => {
         newTag.addEventListener('click', (e) => {
             e.stopPropagation()
             
-            const filtered = data.filter(card => card.category === lib.category);
+            const filtered = data.filter(card => card.category === lib.category)
             span.textContent = filtered.length
+            document.querySelectorAll('.tags').forEach(t => t.classList.remove('active'))
+            newTag.classList.add('active')
             renderCards(filtered)
-            
-        });
+        })
         
         tagIndexed.appendChild(newTag)
     }
-});
+})
 
 
 span.textContent = data.length

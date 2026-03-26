@@ -79,6 +79,11 @@
     color: var(--bg-color);
 }
 
+.tags.active{
+    background-color: var(--h1-color);
+    color: var(--bg-color);
+}
+
 .how-many-libs{
     display: flex;
     justify-content: flex-start;
