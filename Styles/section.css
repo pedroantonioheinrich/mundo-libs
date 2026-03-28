@@ -54,6 +54,13 @@
     outline: none;
 }
 
+.ul-search-response{
+    background-color: crimson;
+    width: 50%;
+    height: fit-content;
+    padding: 20px;
+}
+
 /* --- TAGS (TAMANHO ORIGINAL) --- */
 .indexed-tags {
     width: 70%;

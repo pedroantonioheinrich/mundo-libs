@@ -3,6 +3,8 @@ const tagIndexed = document.querySelector(".indexed-tags")
 const span = document.querySelector(".how-many-libs span")
 const btnAll = document.querySelector(".tag-all")
 const searchBar = document.querySelector("#search-bar")
+const searchBarBox = document.querySelector(".search-bar-box")
+
 
 let tagsArr = []
 let globalData = []
@@ -47,6 +49,21 @@ function renderCards(dataToShow) {
 }
 
 
+
+// function renderSearchResult(foundData){
+//     searchBarBox.innerHTML = ""
+//     const ul = document.createElement('ul')
+//     ul.classList.add('ul-search-response')
+//     foundData.forEach((lib)=>{
+//         const li = document.createElement('li')
+//         li.innerHTML = `
+//             <li>${lib.name}</li>
+//         `
+//         ul.appendChild(li)
+//     })
+//     searchBarBox.appendChild(ul)
+// }
+
 function setupFilters(data){
     btnAll.addEventListener('click', () => {
         span.textContent = data.length
@@ -84,7 +101,7 @@ function setupFilters(data){
 function setupSearch(data) {
     searchBar.addEventListener("input", (e) => {
         const searchTerm = e.target.value.toLowerCase().trim()
-
+        
         const filtered = data.filter(lib => {
             return (
                 lib.name.toLowerCase().includes(searchTerm) || 
@@ -92,7 +109,8 @@ function setupSearch(data) {
                 lib.description.toLowerCase().includes(searchTerm)
             );
         });
-
+           
+        // renderSearchResult(filtered)
         renderCards(filtered);
         
         span.textContent = filtered.length;
