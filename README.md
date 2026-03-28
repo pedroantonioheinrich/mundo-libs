@@ -14,7 +14,6 @@
 
 * **Busca Inteligente:** Filtre bibliotecas por nome ou categoria em tempo real.
 * **Code Playground Visual:** Visualização de código com syntax highlighting (Prism.js) no estilo Dark Mode.
-* **One-Click Copy:** Botões de cópia simplificados para comandos e snippets.
 * **Interface Responsiva:** Otimizado para desktop e dispositivos móveis.
 * **Performance:** Feito com Vanilla JS para carregamento instantâneo.
 
