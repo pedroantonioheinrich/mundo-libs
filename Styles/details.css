@@ -1,0 +1,261 @@
+/* RESET E FONTES INDEPENDENTES */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Fira+Code:wght@400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #0f1729;
+    --h1-color: #fac814;
+    --p-color: #fff;
+    --p2-color: #a6a6a6;
+    --border-smooth: #a6a6a632;
+    --elements-color: #18212f;
+    --accent-green: #4ade80;
+    
+    /* Cores exclusivas para o Syntax Highlighting */
+    --token-keyword: #ff79c6;
+    --token-string: #f1fa8c;
+    --token-function: #50fa7b;
+    --token-comment: #6272a4;
+    --token-number: #bd93f9;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--p-color);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+/* TRANSIÇÃO GLOBAL PARA ELEMENTOS CLICÁVEIS */
+button, 
+.command-item, 
+.btn-back, 
+.install-pill,
+a {
+    transition: all 0.2s ease-in-out;
+}
+
+/* LAYOUT PRINCIPAL */
+.details-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR (ESQUERDA) */
+.sidebar {
+    width: 320px;
+    background-color: var(--elements-color);
+    border-right: 1px solid var(--border-smooth);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.btn-back {
+    color: var(--p2-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-back:hover { 
+    color: var(--p-color);
+    transform: translateX(-4px);
+}
+
+#lib-name { 
+    color: var(--h1-color);
+    font-size: 1.5rem; 
+    font-weight: 600; 
+}
+
+/* SEÇÕES DA SIDEBAR */
+.setup-nav span, .commands-nav span {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--p2-color);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.install-pill {
+    background: rgba(250, 200, 20, 0.05);
+    border: 1px solid var(--h1-color);
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.install-pill:hover {
+    background: rgba(250, 196, 20, 0.12);
+    transform: translateY(-2px);
+}
+
+.install-pill code {
+    color: var(--h1-color);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+}
+
+.command-item {
+    padding: 12px 15px;
+    color: var(--p2-color);
+    cursor: pointer;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+    list-style: none;
+}
+
+.command-item:hover {
+    background: var(--border-smooth);
+    color: var(--p-color);
+    padding-left: 20px;
+}
+
+.command-item.active {
+    background: rgba(250, 200, 20, 0.1);
+    color: var(--h1-color);
+    border-left: 3px solid var(--h1-color);
+}
+
+.command-item:active {
+    transform: scale(0.98);
+}
+
+/* CONTEÚDO PRINCIPAL (DIREITA) */
+.main-content {
+    flex: 1;
+    padding: 60px 80px;
+    max-width: 1100px;
+}
+
+/* Animação para quando o conteúdo troca */
+@keyframes contentFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#command-display {
+    animation: contentFadeIn 0.4s ease-out;
+}
+
+.import-hint {
+    color: var(--p2-color);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+#command-title {
+    color: var(--p-color);
+    font-size: 2.5rem;
+    margin: 15px 0;
+}
+
+.lib-desc {
+    color: var(--p2-color);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+/* CARD DE CÓDIGO (EDITOR) */
+.code-card {
+    background: #0f141c;
+    border: 1px solid var(--border-smooth);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.code-card-header {
+    background: rgba(0,0,0,0.2);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-smooth);
+}
+
+.mac-dots { display: flex; gap: 8px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+.code-body {
+    display: flex;
+    padding: 20px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.95rem;
+}
+
+.line-numbers {
+    width: 50px;
+    text-align: right;
+    padding-right: 20px;
+    color: var(--p2-color);
+    opacity: 0.3;
+    user-select: none;
+    border-right: 1px solid var(--border-smooth);
+}
+
+/* Ajustes para Prism.js */
+pre[class*="language-"] {
+    margin: 0 !important;
+    padding: 0 20px !important;
+    flex: 1;
+    overflow-x: auto;
+    background: transparent !important;
+}
+
+code[class*="language-"] {
+    font-family: 'Fira Code', monospace !important;
+    text-shadow: none !important;
+    background: transparent !important;
+    color: var(--p-color) !important;
+}
+
+/* Cores dos Tokens (Syntax Highlight) */
+.token.keyword { color: var(--token-keyword) !important; font-weight: bold; }
+.token.string { color: var(--token-string) !important; }
+.token.function { color: var(--token-function) !important; }
+.token.comment { color: var(--token-comment) !important; font-style: italic; }
+.token.number { color: var(--token-number) !important; }
+.token.operator { color: var(--p-color); }
+.token.class-name { color: var(--h1-color); }
+
+
+/* SAÍDA (TERMINAL) */
+.output-section { margin-top: 30px; }
+.output-label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: var(--p2-color);
+}
+
+.output-box {
+    background: #010409;
+    border: 1px solid var(--border-smooth);
+    padding: 25px;
+    border-radius: 8px;
+    color: var(--accent-green);
+    font-family: 'Fira Code', monospace;
+    white-space: pre;
+    font-size: 0.9rem;
+}

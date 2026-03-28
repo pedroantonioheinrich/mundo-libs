@@ -31,8 +31,9 @@ function renderCards(dataToShow) {
         newCard.classList.add("card-container")
         newCard.innerHTML = `
             <div class="card-img">${lib.icon}</div>
+            <div class="card-name">${lib.name}</div>
             <div class="card-description">
-                <p>${lib.description.slice(0, 80)}...</p>
+                <p>${lib.description.slice(0, 140)}...</p>
             </div>
             <div class="card-tag-category">${lib.category}</div>
         `

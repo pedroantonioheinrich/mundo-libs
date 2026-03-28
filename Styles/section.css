@@ -1,204 +1,203 @@
-
-.section-tagindex-search{
+/* --- SEÇÃO DE BUSCA E FILTROS --- */
+.section-tagindex-search {
     min-height: 160px;
-    width: 100dvw;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
-.search-bar-box{
+/* Container da Barra de Busca */
+.search-bar-box {
     background-color: var(--elements-color);
-    width: 40%;
-    height: 40px;
+    width: 40%; 
+    height: 50px; 
     display: flex;
-    justify-content: space-evenly;
-    align-items:center;
+    justify-content: flex-start;
+    align-items: center;
     border: 1px solid var(--border-smooth);
     border-radius: 10px;
-    color: var(--p-color);
-    padding: 10px;
-}
-.search-bar-box:focus{
-    box-shadow: 0 0 8px 0.5px var(--h1-color);
-}
-.search-bar-box:hover{
-    box-shadow: 0 0 8px 0.5px var(--h1-color);
+    padding: 0 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
 }
 
-#search-icon{
+.search-bar-box:focus-within {
+    border-color: var(--h1-color);
+    box-shadow: 0 0 18px 1px rgba(250, 200, 20, 0.31);
+}
+
+.search-bar-box:hover {
+    border-color: var(--h1-color);
+    box-shadow: 0 0 18px 1px rgba(250, 200, 20, 0.31);
+}
+
+#search-icon {
     width: 20px;
     filter: brightness(0) invert(1);
     transform: scaleX(-1);
     rotate: 10deg;
     opacity: 0.5;
+    transition: 0.3s;
 }
 
-#search-bar{
+#search-bar {
     background-color: transparent;
     width: 100%;
-    height: 60px;
+    height: 100%;
     padding-left: 15px;
-    font-size: 18px;
+    font-size: 18px; /* Mantido seu padrão original */
     color: var(--p-color);
     border: none;
+    outline: none;
 }
 
-
-.indexed-tags{
+/* --- TAGS (TAMANHO ORIGINAL) --- */
+.indexed-tags {
     width: 70%;
-    min-height: 220px;
+    min-height: 100px;
     padding: 15px;
-    margin: 20px;
+    margin: 20px auto;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px; /* Espaçamento original reduzido */
 }
 
-.tags{
-    background-color:var(--elements-color);
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 15px;
-    padding-right: 15px;
+.tags, .tag-all {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--elements-color);
+    padding: 5px 15px; /* Tamanho original restaurado */
     border-radius: 30px;
     color: var(--p2-color);
     text-decoration: none;
-    font-size: 14px;
-    transition: ease-in-out 0.5s;
+    font-size: 13px;
+    transition: all 0.3s ease;
     margin: 2px;
     cursor: pointer;
-    
+    border: 1px solid transparent; /* Para evitar pulo no hover */
 }
-.tags:hover{
+
+.tags:hover, .tag-all:hover {
     border: 1px solid var(--h1-color);
     box-shadow: 0 0 10px 0.1px var(--h1-color);
+    transform: translateY(-2px);
 }
-.tags:focus{
+
+.tags.active, .tag-all.active {
     background-color: var(--h1-color);
     color: var(--bg-color);
 }
 
-.tags.active{
-    background-color: var(--h1-color);
-    color: var(--bg-color);
-}
-
-.tag-all{
-    background-color:var(--elements-color);
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 15px;
-    padding-right: 15px;
-    border-radius: 30px;
-    color: var(--p2-color);
-    text-decoration: none;
-    font-size: 14px;
-    transition: ease-in-out 0.5s;
-    margin: 2px;
-    cursor: pointer;
-    
-}
-.tag-all:hover{
-    border: 1px solid var(--h1-color);
-    box-shadow: 0 0 10px 0.1px var(--h1-color);
-}
-.tag-all:focus{
-    background-color: var(--h1-color);
-    color: var(--bg-color);
-}
-
-.tag-all.active{
-    background-color: var(--h1-color);
-    color: var(--bg-color);
-}
-
-.how-many-libs{
+/* Contador de Libs */
+.how-many-libs {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     width: 100%;
     height: 40px;
-    padding-left: 380px;
-}
-.how-many-libs span{
-    color: var(--h1-color);
-}
-.how-many-libs p{
-    color: var(--p2-color);
+    padding-left: 10%; /* Ajustado para alinhar melhor */
 }
 
-    
+.how-many-libs span { color: var(--h1-color); margin: 0 5px; }
+.how-many-libs p { color: var(--p2-color); }
 
-.content{
-    height: fit-content;
-    width: 80%;
-    border-radius: 10px;
+/* --- GRID DE CONTEÚDO --- */
+.content {
+    width: 90%;
+    margin: 0 auto;
     display: flex;
-    flex-direction: row;
-    flex-wrap:wrap;
-    justify-content:center;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding-bottom: 50px;
 }
 
-.card-container{
+.card-container {
     background-color: var(--elements-color);
-    height: 200px;
-    width: 310px;
-    margin: 10px;
+    height: 220px;
+    width: 360px;
+    margin: 5px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     border-radius: 10px;
     border: 1px solid var(--border-smooth);
-    transition: ease-in-out 0.5s;
+    transition: all 0.3s ease;
     cursor: pointer;
     padding: 20px;
+    text-decoration: none;
 }
-.card-container:hover{
+
+.card-container:hover {
     border: 1px solid var(--h1-color);
     box-shadow: 0 0 10px 0.1px var(--h1-color);
+    transform: translateY(-5px);
 }
 
-.card-img{
-    font-size: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.card-img { font-size: 35px; margin-bottom: 10px; }
+
+.card-name{
+    color: var(--p-color);
+    font-size: 18px;
+    font-weight: 800;
 }
 
-.card-description{
-    width: 19.5rem;
+.card-description {
+    width: 100%;
     height: 6rem;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-}
-.card-description p{
-    color: var(--p2-color);
-    font-size: 17px;
-    text-align: left;
-    text-overflow: ellipsis;
+    margin: 10px 0;
 }
 
-.card-tag-category{
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 15px;
-    padding-right: 15px;
+.card-description p {
+    color: var(--p2-color);
+    font-size: 13px;
+    line-height: 1.4;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.card-tag-category {
+    padding: 5px 15px;
     border-radius: 30px;
     color: var(--p2-color);
-    text-decoration: none;
     font-size: 14px;
     border: 1px solid var(--p2-color);
-
-}
-.card-tag-category:hover{
-    border: 1px solid var(--h1-color);
+    transition: 0.3s;
 }
 
+/* --- OTIMIZAÇÃO MOBILE (MEDIA QUERIES) --- */
+@media (max-width: 768px) {
+    .search-bar-box {
+        width: 90%; /* Barra de busca ocupa quase tudo no celular */
+    }
 
+    .indexed-tags {
+        width: 95%;
+        margin: 10px auto;
+    }
+
+    .how-many-libs {
+        padding-left: 20px;
+        justify-content: center;
+    }
+
+    .card-container {
+        width: 100%; /* Card ocupa a largura da tela no mobile */
+        max-width: 350px;
+        height: auto;
+        min-height: 200px;
+    }
+
+    .content {
+        width: 100%;
+        padding: 0 15px;
+    }
+}

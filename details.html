@@ -1,25 +1,56 @@
-<main class="container">
-    <a href="index.html" class="btn-back">← Voltar</a>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyLibs - Detalhes da Biblioteca</title>
     
-    <section class="lib-header">
-        <div id="lib-icon" class="detail-icon"></div>
-        <h1 id="lib-name"></h1>
-        <span id="lib-category" class="tag-category"></span>
-    </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="stylesheet" href="./Styles/details.css">
+</head>
+<body>
 
-    <p id="lib-description"></p>
+    <main class="details-container">
+        <aside class="sidebar">
+            <a href="index.html" class="btn-back">← Voltar</a>
+            
+            <div class="lib-brand">
+                <div id="lib-icon" class="lib-icon-display"></div>
+                <h1 id="lib-name">Carregando...</h1>
+            </div>
 
-    <div class="setup-commands">
-        <div class="code-block">
-            <span>Instalação:</span>
-            <code id="install-cmd"></code>
-        </div>
-        <div class="code-block">
-            <span>Importação:</span>
-            <code id="import-cmd"></code>
-        </div>
-    </div>
+            <nav class="setup-nav">
+                <div class="setup-item">
+                    <span>>_ INSTALAÇÃO</span>
+                    <div class="install-pill">
+                        <code id="install-cmd">...</code>
+                    </div>
+                </div>
+            </nav>
 
-    <section id="commands-container">
+            <nav class="commands-nav">
+                <span><img src="./Styles/Icons/book.png" alt="" class="nav-icon"> COMANDOS</span>
+                <ul id="commands-menu">
+                    </ul>
+            </nav>
+        </aside>
+
+        <section class="main-content">
+            <header class="content-header">
+                <code id="import-cmd" class="import-hint"></code>
+                <h2 id="command-title">Selecione um comando</h2>
+                <p id="lib-description" class="lib-desc"></p>
+            </header>
+
+            <div id="command-display" class="display-area">
+                </div>
         </section>
-</main>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="./Scripts/details.js" type="module"></script>
+</body>
+</html>

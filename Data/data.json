@@ -63,7 +63,7 @@
   "name": "python-nmap",
   "category": "Rede",
   "description": "python-nmap é um wrapper Python que permite utilizar o scanner de portas Nmap diretamente em scripts, fornecendo uma interface simples para automação de tarefas de reconhecimento de rede. Ele encapsula a execução do Nmap e converte a saída XML em estruturas de dados Python, facilitando a análise de portas abertas, serviços, sistemas operacionais e scripts NSE (Nmap Scripting Engine) .",
-  "installCmd": "pip install python-nmap\n# Requer o Nmap instalado no sistema\n# Linux: sudo apt install nmap\n# macOS: brew install nmap\n# Windows: https://nmap.org/download.html",
+  "installCmd": "pip install python-nmap\n",
   "importCmd": "import nmap",
   "commands": [
     {
@@ -92,8 +92,8 @@
   "name": "Selenium",
   "category": "Automação",
   "description": "Selenium é uma ferramenta poderosa para automação de navegadores web, amplamente utilizada para testes automatizados de aplicações web, web scraping dinâmico e automação de tarefas repetitivas. Ele suporta múltiplos navegadores (Chrome, Firefox, Edge, Safari) e permite interagir com páginas web como um usuário real, incluindo cliques, preenchimento de formulários, execução de JavaScript e captura de screenshots.",
-  "installCmd": "pip install selenium\n# Além disso, é necessário o WebDriver para o navegador desejado:\n# Chrome: https://chromedriver.chromium.org/\n# Firefox: https://github.com/mozilla/geckodriver/releases",
-  "importCmd": "from selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.common.keys import Keys",
+  "installCmd": "pip install selenium\n",
+  "importCmd": "Selenium",
   "commands": [
     {
       "cmdName": "Abrir página e extrair título",
@@ -731,7 +731,7 @@
   "category": "Geração de Dados",
   "description": "Faker é uma biblioteca Python para geração de dados falsos realistas em múltiplos idiomas. Ela permite criar nomes, endereços, textos, números, datas, perfis completos e muito mais, sendo essencial para testes, desenvolvimento, populating de bancos de dados e prototipagem.",
   "installCmd": "pip install faker",
-  "importCmd": "from faker import Faker\nfake = Faker('pt_BR')  # Para dados em português do Brasil",
+  "importCmd": "from faker import Faker\n",
   "commands": [
     {
       "cmdName": "Dados básicos e localização",
@@ -905,9 +905,8 @@
   "name": "PyInstaller",
   "category": "Empacotamento e Distribuição",
   "description": "PyInstaller é uma ferramenta que empacota aplicações Python em executáveis standalone para Windows, Linux e macOS. Ela analisa automaticamente as dependências do projeto, empacota o interpretador Python e as bibliotecas necessárias, permitindo distribuir aplicações sem exigir que o usuário final tenha Python instalado.",
-  "oficialDocLink": "https://pyinstaller.org/",
   "installCmd": "pip install pyinstaller",
-  "importCmd": "# PyInstaller é usado via linha de comando, não requer importação no código\n# Comandos básicos:\n# pyinstaller script.py\n# pyinstaller --onefile script.py\n# pyinstaller --windowed script.py  # Sem console (GUI)",
+  "importCmd": "PyInstaller é usado via linha de comando, não requer importação no código\n",
   "commands": [
     {
       "cmdName": "Empacotamento básico e configurações",
@@ -959,9 +958,6 @@
     }
   ]
 }
-
-
-
 
 ]
 
