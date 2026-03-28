@@ -1,36 +1,61 @@
 [
 {
   "icon": "📦",
-  "id": "3",
+  "id": "1",
   "name": "Argparse",
   "category": "Analisador Sintático",
   "description": "Argparse é o módulo padrão do Python para analisar argumentos de linha de comando. Ele gera automaticamente mensagens de ajuda e uso, valida entradas e oferece suporte a argumentos posicionais, opcionais, subcomandos e valores padrão.",
   "installCmd": "# Argparse é uma biblioteca padrão do Python, não requer instalação",
   "importCmd": "import argparse",
   "commands": [
-    {
-      "cmdName": "Argumentos posicionais básicos",
-      "cmdDescription": "Exemplo simples que aceita um argumento posicional obrigatório.",
-      "cmdCode": "import argparse\n\nparser = argparse.ArgumentParser(description='Soma dois números')\nparser.add_argument('num1', type=int, help='Primeiro número')\nparser.add_argument('num2', type=int, help='Segundo número')\nargs = parser.parse_args()\n\nresultado = args.num1 + args.num2\nprint(f'Resultado: {resultado}')",
-      "cmdOutput": "$ python soma.py 10 20\nResultado: 30"
-    },
-    {
-      "cmdName": "Argumentos opcionais e flags",
-      "cmdDescription": "Demonstra argumentos opcionais com valores padrão e flags booleanas.",
-      "cmdCode": "import argparse\n\nparser = argparse.ArgumentParser(description='Configuração de servidor')\nparser.add_argument('--porta', type=int, default=8080, help='Porta do servidor')\nparser.add_argument('--verbose', action='store_true', help='Ativa modo verboso')\nparser.add_argument('--nome', required=True, help='Nome do servidor')\n\nargs = parser.parse_args()\n\nif args.verbose:\n    print(f'Iniciando servidor {args.nome} na porta {args.porta}')",
-      "cmdOutput": "$ python servidor.py --nome api --porta 3000 --verbose\nIniciando servidor api na porta 3000"
-    },
-    {
-      "cmdName": "Subcomandos (CLI estilo git)",
-      "cmdDescription": "Implementa múltiplos subcomandos com argumentos específicos para cada um.",
-      "cmdCode": "import argparse\n\nparser = argparse.ArgumentParser(description='Gerenciador de tarefas')\nsubparsers = parser.add_subparsers(dest='comando', required=True)\n\n# Subcomando 'adicionar'\nparser_add = subparsers.add_parser('adicionar', help='Adiciona nova tarefa')\nparser_add.add_argument('tarefa', help='Descrição da tarefa')\nparser_add.add_argument('--prioridade', type=int, choices=[1,2,3], default=2)\n\n# Subcomando 'listar'\nparser_list = subparsers.add_parser('listar', help='Lista tarefas')\nparser_list.add_argument('--apenas-pendentes', action='store_true')\n\nargs = parser.parse_args()\n\nif args.comando == 'adicionar':\n    print(f'Tarefa \"{args.tarefa}\" adicionada com prioridade {args.prioridade}')\nelif args.comando == 'listar':\n    print('Listando tarefas...' + (' (apenas pendentes)' if args.apenas_pendentes else ''))",
-      "cmdOutput": "$ python tarefas.py adicionar \"Estudar Python\" --prioridade 1\nTarefa \"Estudar Python\" adicionada com prioridade 1"
-    }
+    
+  {
+    "cmdName": "Argumentos posicionais básicos",
+    "cmdDescription": "Exemplo simples que aceita argumentos posicionais obrigatórios, com suporte a múltiplos valores e nargs.",
+    "cmdCode": "import argparse\n\nparser = argparse.ArgumentParser(description='Operações com números')\n\n# Argumento posicional único\nparser.add_argument('num1', type=int, help='Primeiro número')\n\n# Múltiplos argumentos posicionais\nparser.add_argument('num2', type=int, help='Segundo número')\n\n# Argumento com nargs para múltiplos valores\nparser.add_argument('valores', nargs='*', type=int, help='Valores opcionais adicionais')\n\n# Argumento com nargs='+' (pelo menos um)\nparser.add_argument('--soma', nargs='+', type=int, help='Lista de números para somar')\n\nargs = parser.parse_args()\n\nresultado = args.num1 + args.num2\nprint(f'Soma dos posicionais: {resultado}')\n\nif args.valores:\n    print(f'Valores adicionais: {args.valores}')\n    print(f'Soma total: {resultado + sum(args.valores)}')\n\nif args.soma:\n    print(f'Soma da lista --soma: {sum(args.soma)}')",
+    "cmdOutput": "$ python args.py 10 20 --soma 1 2 3\nSoma dos posicionais: 30\nSoma da lista --soma: 6\n\n$ python args.py 10 20 30 40 50\nSoma dos posicionais: 30\nValores adicionais: [30, 40, 50]\nSoma total: 120"
+  },
+  {
+    "cmdName": "Argumentos opcionais e flags",
+    "cmdDescription": "Demonstra argumentos opcionais com valores padrão, flags booleanas e ações personalizadas.",
+    "cmdCode": "import argparse\n\nparser = argparse.ArgumentParser(description='Configuração avançada de servidor')\n\n# Opção com valor padrão\nparser.add_argument('--porta', type=int, default=8080, help='Porta do servidor')\n\n# Flag booleana (store_true / store_false)\nparser.add_argument('--verbose', action='store_true', help='Ativa modo verboso')\nparser.add_argument('--quiet', action='store_false', dest='verbose', help='Modo silencioso')\n\n# Argumento obrigatório\nparser.add_argument('--nome', required=True, help='Nome do servidor')\n\n# Argumento com escolhas limitadas\nparser.add_argument('--ambiente', choices=['dev', 'staging', 'prod'], default='dev', help='Ambiente')\n\n# Argumento com múltiplos valores\nparser.add_argument('--hosts', nargs='+', default=['localhost'], help='Lista de hosts')\n\n# Argumento com contagem (store_count)\nparser.add_argument('--debug', action='count', default=0, help='Nível de debug (múltiplas ocorrências)')\n\n# Argumento constante\nparser.add_argument('--force', action='store_const', const=True, default=False, help='Força execução')\n\n# Argumento para append\nparser.add_argument('--extra', action='append', help='Parâmetros extras (pode ser usado múltiplas vezes)')\n\n# Argumento com version\nparser.add_argument('--version', action='version', version='%(prog)s 1.0.0')\n\nargs = parser.parse_args()\n\nprint(f\"Nome: {args.nome}\")\nprint(f\"Porta: {args.porta}\")\nprint(f\"Ambiente: {args.ambiente}\")\nprint(f\"Verbose: {args.verbose}\")\nprint(f\"Debug level: {args.debug}\")\nprint(f\"Force: {args.force}\")\nprint(f\"Hosts: {args.hosts}\")\nif args.extra:\n    print(f\"Extras: {args.extra}\")",
+    "cmdOutput": "$ python servidor.py --nome api --ambiente prod --debug --debug --extra chave=valor --extra timeout=30\n --hosts 10.0.0.1 10.0.0.2\nNome: api\nPorta: 8080\nAmbiente: prod\nVerbose: False\nDebug level: 2\nForce: False\nHosts: ['10.0.0.1', '10.0.0.2']\nExtras: ['chave=valor', 'timeout=30']"
+  },
+  {
+    "cmdName": "Subcomandos (CLI estilo git)",
+    "cmdDescription": "Implementa múltiplos subcomandos com argumentos específicos e hierarquia.",
+    "cmdCode": "import argparse\n\nparser = argparse.ArgumentParser(description='Ferramenta de gerenciamento')\nsubparsers = parser.add_subparsers(dest='comando', required=True, help='Comandos disponíveis')\n\n# Subcomando 'adicionar'\nparser_add = subparsers.add_parser('adicionar', help='Adiciona um novo item', aliases=['add', 'a'])\nparser_add.add_argument('item', help='Nome do item')\nparser_add.add_argument('--prioridade', type=int, choices=[1,2,3,4,5], default=3, help='Prioridade (1-5)')\nparser_add.add_argument('--tags', nargs='+', help='Tags associadas')\nparser_add.add_argument('--data', type=lambda s: datetime.strptime(s, '%Y-%m-%d'), help='Data de vencimento')\n\n# Subcomando 'listar'\nparser_list = subparsers.add_parser('listar', help='Lista itens', aliases=['ls', 'l'])\nparser_list.add_argument('--filtro', choices=['todos', 'pendentes', 'concluidos'], default='todos')\nparser_list.add_argument('--tag', help='Filtrar por tag')\nparser_list.add_argument('--sort', choices=['nome', 'prioridade', 'data'], default='nome')\nparser_list.add_argument('--reverse', action='store_true', help='Ordem reversa')\nparser_list.add_argument('--limit', type=int, help='Limite de resultados')\n\n# Subcomando 'remover'\nparser_remove = subparsers.add_parser('remover', help='Remove um item', aliases=['rm', 'del'])\nparser_remove.add_argument('id', type=int, help='ID do item')\nparser_remove.add_argument('--force', action='store_true', help='Forçar remoção')\n\n# Subcomando 'atualizar'\nparser_update = subparsers.add_parser('atualizar', help='Atualiza um item', aliases=['up', 'edit'])\nparser_update.add_argument('id', type=int, help='ID do item')\nparser_update.add_argument('--nome', help='Novo nome')\nparser_update.add_argument('--prioridade', type=int, help='Nova prioridade')\nparser_update.add_argument('--status', choices=['pendente', 'concluido'], help='Novo status')\n\nargs = parser.parse_args()\n\nif args.comando in ['adicionar', 'add', 'a']:\n    print(f\"✅ Item '{args.item}' adicionado com prioridade {args.prioridade}\")\n    if args.tags:\n        print(f\"   Tags: {', '.join(args.tags)}\")\n    if args.data:\n        print(f\"   Data: {args.data.strftime('%d/%m/%Y')}\")\n\nelif args.comando in ['listar', 'ls', 'l']:\n    print(f\"📋 Listando itens (filtro: {args.filtro})\")\n    if args.tag:\n        print(f\"   Tag: {args.tag}\")\n    print(f\"   Ordenação: {args.sort} {'(reversa)' if args.reverse else ''}\")\n    if args.limit:\n        print(f\"   Limite: {args.limit}\")\n\nelif args.comando in ['remover', 'rm', 'del']:\n    print(f\"🗑️ Removendo item {args.id}\")\n    if args.force:\n        print(\"   ⚠️ Remoção forçada!\")\n\nelif args.comando in ['atualizar', 'up', 'edit']:\n    print(f\"✏️ Atualizando item {args.id}\")\n    if args.nome:\n        print(f\"   Novo nome: {args.nome}\")\n    if args.prioridade:\n        print(f\"   Nova prioridade: {args.prioridade}\")\n    if args.status:\n        print(f\"   Novo status: {args.status}\")",
+    "cmdOutput": "$ python tool.py adicionar \"Estudar Python\" --prioridade 1 --tags estudo python --data 2025-04-15\n✅ Item 'Estudar Python' adicionado com prioridade 1\n   Tags: estudo, python\n   Data: 15/04/2025\n\n$ python tool.py listar --filtro pendentes --tag python --sort prioridade --reverse --limit 10\n📋 Listando itens (filtro: pendentes)\n   Tag: python\n   Ordenação: prioridade (reversa)\n   Limite: 10"
+  },
+  {
+    "cmdName": "Argumentos com tipos personalizados",
+    "cmdDescription": "Demonstra criação de tipos personalizados para validação e conversão de argumentos.",
+    "cmdCode": "import argparse\nimport os\nimport re\nfrom datetime import datetime\n\n# Tipos personalizados\ndef tipo_arquivo_existente(caminho):\n    \"\"\"Valida se o arquivo existe\"\"\"\n    if not os.path.exists(caminho):\n        raise argparse.ArgumentTypeError(f\"Arquivo '{caminho}' não encontrado\")\n    return caminho\n\ndef tipo_data(data_str):\n    \"\"\"Converte string para data\"\"\"\n    try:\n        return datetime.strptime(data_str, '%Y-%m-%d')\n    except ValueError:\n        raise argparse.ArgumentTypeError(f\"Data inválida: {data_str}. Use YYYY-MM-DD\")\n\ndef tipo_email(email):\n    \"\"\"Valida formato de email\"\"\"\n    padrao = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'\n    if not re.match(padrao, email):\n        raise argparse.ArgumentTypeError(f\"Email inválido: {email}\")\n    return email\n\ndef tipo_ip(ip):\n    \"\"\"Valida formato de IP\"\"\"\n    partes = ip.split('.')\n    if len(partes) != 4:\n        raise argparse.ArgumentTypeError(f\"IP inválido: {ip}\")\n    for parte in partes:\n        if not parte.isdigit() or not 0 <= int(parte) <= 255:\n            raise argparse.ArgumentTypeError(f\"IP inválido: {ip}\")\n    return ip\n\ndef tipo_intervalo(min_val, max_val):\n    \"\"\"Retorna uma função de validação de intervalo\"\"\"\n    def validador(valor):\n        ivalor = int(valor)\n        if not (min_val <= ivalor <= max_val):\n            raise argparse.ArgumentTypeError(f\"Valor deve estar entre {min_val} e {max_val}\")\n        return ivalor\n    return validador\n\nparser = argparse.ArgumentParser(description='Validação com tipos personalizados')\n\n# Argumentos com tipos personalizados\nparser.add_argument('--arquivo', type=tipo_arquivo_existente, help='Arquivo de entrada')\nparser.add_argument('--data', type=tipo_data, help='Data no formato YYYY-MM-DD')\nparser.add_argument('--email', type=tipo_email, help='Endereço de email')\nparser.add_argument('--ip', type=tipo_ip, help='Endereço IP')\nparser.add_argument('--porcentagem', type=tipo_intervalo(0, 100), help='Porcentagem (0-100)')\n\n# Argumentos com múltiplos tipos\nparser.add_argument('valores', nargs='*', type=tipo_intervalo(1, 10), help='Valores entre 1 e 10')\n\n# Argumento com função lambda\nparser.add_argument('--tamanho', type=lambda s: s.upper(), help='Converte para maiúsculas')\n\nargs = parser.parse_args()\n\nprint(\"✅ Argumentos validados:\")\nif args.arquivo:\n    print(f\"   Arquivo: {args.arquivo}\")\nif args.data:\n    print(f\"   Data: {args.data.strftime('%d/%m/%Y')}\")\nif args.email:\n    print(f\"   Email: {args.email}\")\nif args.ip:\n    print(f\"   IP: {args.ip}\")\nif args.porcentagem:\n    print(f\"   Porcentagem: {args.porcentagem}%\")\nif args.valores:\n    print(f\"   Valores: {args.valores}\")\nif args.tamanho:\n    print(f\"   Tamanho: {args.tamanho}\")",
+    "cmdOutput": "$ python validacao.py --arquivo /etc/passwd --data 2025-12-31 --email user@example.com\n --ip 192.168.1.1 --porcentagem 75 --tamanho pequeno 2 5 8\n✅ Argumentos validados:\n   Arquivo: /etc/passwd\n   Data: 31/12/2025\n   Email: user@example.com\n   IP: 192.168.1.1\n   Porcentagem: 75%\n   Valores: [2, 5, 8]\n   Tamanho: PEQUENO"
+  },
+  {
+    "cmdName": "Grupos de argumentos e mutuamente exclusivos",
+    "cmdDescription": "Organiza argumentos em grupos e define opções mutuamente exclusivas.",
+    "cmdCode": "import argparse\n\nparser = argparse.ArgumentParser(description='Configuração avançada')\n\n# Grupo obrigatório\nrequired_group = parser.add_argument_group('argumentos obrigatórios')\nrequired_group.add_argument('--usuario', required=True, help='Nome do usuário')\nrequired_group.add_argument('--senha', required=True, help='Senha do usuário')\n\n# Grupo de opções de conexão\nconn_group = parser.add_argument_group('opções de conexão')\nconn_group.add_argument('--host', default='localhost', help='Host do servidor')\nconn_group.add_argument('--porta', type=int, default=5432, help='Porta de conexão')\nconn_group.add_argument('--timeout', type=int, default=30, help='Timeout em segundos')\n\n# Grupo de opções de logging\nlog_group = parser.add_argument_group('opções de logging')\nlog_group.add_argument('--log-level', choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'], default='INFO')\nlog_group.add_argument('--log-file', help='Arquivo de log')\n\n# Grupo mutuamente exclusivo\nmodo_group = parser.add_mutually_exclusive_group(required=True)\nmodo_group.add_argument('--modo-normal', action='store_true', help='Modo normal')\nmodo_group.add_argument('--modo-debug', action='store_true', help='Modo debug')\nmodo_group.add_argument('--modo-teste', action='store_true', help='Modo teste')\n\n# Outro grupo mutuamente exclusivo para ações\naction_group = parser.add_mutually_exclusive_group()\naction_group.add_argument('--criar', action='store_true', help='Cria recurso')\naction_group.add_argument('--remover', action='store_true', help='Remove recurso')\naction_group.add_argument('--atualizar', action='store_true', help='Atualiza recurso')\n\n# Grupo com conflito condicional\nconflict_group = parser.add_mutually_exclusive_group()\nconflict_group.add_argument('--backup', action='store_true', help='Faz backup')\nconflict_group.add_argument('--restore', help='Restaura backup')\n\n# Grupo com título descritivo\noutput_group = parser.add_argument_group('formatação de saída', 'Controle de como os dados são exibidos')\noutput_group.add_argument('--json', action='store_true', help='Saída em JSON')\noutput_group.add_argument('--csv', action='store_true', help='Saída em CSV')\noutput_group.add_argument('--pretty', action='store_true', help='Saída formatada')\n\nargs = parser.parse_args()\n\nprint(\"✅ Configuração carregada:\")\nprint(f\"   Usuário: {args.usuario}\")\nprint(f\"   Host: {args.host}:{args.porta}\")\nprint(f\"   Timeout: {args.timeout}s\")\nprint(f\"   Log: {args.log_level}\")\n\nif args.modos:\n    for modo, ativo in args.modos.items():\n        if ativo:\n            print(f\"   Modo: {modo}\")\n\nif args.criar:\n    print(\"   Ação: Criar\")\nelif args.remover:\n    print(\"   Ação: Remover\")\nelif args.atualizar:\n    print(\"   Ação: Atualizar\")",
+    "cmdOutput": "$ python app.py --usuario admin --senha 123456 --host 10.0.0.1 --porta 3306 --modo-debug --criar --json\n✅ Configuração carregada:\n   Usuário: admin\n   Host: 10.0.0.1:3306\n   Timeout: 30s\n   Log: INFO\n   Modo: modo-debug\n   Ação: Criar"
+  },
+  {
+    "cmdName": "Argumentos com metavars e ajuda personalizada",
+    "cmdDescription": "Personaliza a exibição de ajuda com metavars, descrições detalhadas e formatação.",
+    "cmdCode": "import argparse\n\nparser = argparse.ArgumentParser(\n    description=''\"'\"'\n    Ferramenta de análise de dados\n    \n    Esta ferramenta processa arquivos de dados e gera relatórios\n    estatísticos com suporte a múltiplos formatos.\n    '\"'\n    ',\n    epilog=''\"'\"'\n    Exemplos de uso:\n      %(prog)s dados.csv --formato json --output resultado.json\n      %(prog)s --verbose --stats mean,std dados.txt\n      %(prog)s --entrada arquivo.dat --plot\n    '\"'\n    ',\n    formatter_class=argparse.RawDescriptionHelpFormatter\n)\n\n# Argumentos com metavars personalizadas\nparser.add_argument('arquivo', \n                    metavar='ARQUIVO_ENTRADA',\n                    help='Arquivo de dados a ser processado')\n\nparser.add_argument('--saida', '-o',\n                    metavar='CAMINHO',\n                    help='Diretório ou arquivo de saída')\n\nparser.add_argument('--formato',\n                    choices=['json', 'csv', 'xml', 'yaml'],\n                    default='json',\n                    metavar='{json,csv,xml,yaml}',\n                    help='Formato de saída dos dados')\n\n# Argumentos com descrições detalhadas\nparser.add_argument('--verbose', '-v',\n                    action='count',\n                    default=0,\n                    help='''\n                    Aumenta o nível de verbosidade.\n                    Pode ser usado múltiplas vezes:\n                      -v   : informações básicas\n                      -vv  : informações detalhadas\n                      -vvv : informações completas (debug)\n                    ''')\n\nparser.add_argument('--estatisticas',\n                    nargs='+',\n                    choices=['mean', 'median', 'std', 'min', 'max', 'count'],\n                    default=['mean', 'count'],\n                    metavar='ESTAT',\n                    help='Estatísticas a calcular (padrão: mean count)')\n\nparser.add_argument('--filtro',\n                    action='append',\n                    nargs=2,\n                    metavar=('CAMPO', 'VALOR'),\n                    help='Filtro no formato campo=valor (pode ser usado múltiplas vezes)')\n\n# Argumentos com placeholder de valores\nparser.add_argument('--range',\n                    nargs=2,\n                    type=float,\n                    metavar=('MIN', 'MAX'),\n                    help='Intervalo de valores para filtragem')\n\nparser.add_argument('--cor',\n                    choices=['red', 'green', 'blue', 'yellow'],\n                    metavar='COR',\n                    help='Cor para destaque nos gráficos')\n\n# Argumentos com ação personalizada\nclass ImprimirArgumentos(argparse.Action):\n    def __call__(self, parser, namespace, values, option_string=None):\n        print(f\"Argumento '{self.dest}' recebeu: {values}\")\n        setattr(namespace, self.dest, values)\n\nparser.add_argument('--debug',\n                    action=ImprimirArgumentos,\n                    nargs='?',\n                    const=True,\n                    help='Modo debug com informações detalhadas')\n\nargs = parser.parse_args()\n\nprint(\"\\n✅ Processando arquivo:\", args.arquivo)\nif args.saida:\n    print(f\"   Saída: {args.saida}\")\nprint(f\"   Formato: {args.formato}\")\nprint(f\"   Verbosidade: {args.verbose}\")\nprint(f\"   Estatísticas: {args.estatisticas}\")\nif args.filtro:\n    print(f\"   Filtros: {dict(args.filtro)}\")\nif args.range:\n    print(f\"   Range: {args.range[0]} - {args.range[1]}\")",
+    "cmdOutput": "$ python analise.py dados.csv -o relatorios/ --formato json -vv --estatisticas\n mean median std min max --filtro data 2024 --filtro status ativo --range 0 100\n✅ Processando arquivo: dados.csv\n   Saída: relatorios/\n   Formato: json\n   Verbosidade: 2\n   Estatísticas: ['mean', 'median', 'std', 'min', 'max']\n   Filtros: {'data': '2024', 'status': 'ativo'}\n   Range: 0.0 - 100.0"
+  },
+  {
+    "cmdName": "Pais e argumentos aninhados",
+    "cmdDescription": "Utiliza ArgumentParser como pai para compartilhar argumentos entre subcomandos.",
+    "cmdCode": "import argparse\n\n# Parser pai com argumentos comuns\nparent_parser = argparse.ArgumentParser(add_help=False)\nparent_parser.add_argument('--verbose', '-v', action='count', default=0, help='Aumenta verbosidade')\nparent_parser.add_argument('--quiet', '-q', action='store_true', help='Modo silencioso')\nparent_parser.add_argument('--config', '-c', help='Arquivo de configuração')\nparent_parser.add_argument('--no-color', action='store_true', help='Desativa cores na saída')\n\n# Parser principal\nparser = argparse.ArgumentParser(\n    description='Ferramenta com múltiplos comandos',\n    parents=[parent_parser]\n)\n\nsubparsers = parser.add_subparsers(dest='comando', required=True, help='Comandos disponíveis')\n\n# Comando 'deploy' com argumentos próprios e herdados\ndeploy_parser = subparsers.add_parser('deploy', parents=[parent_parser], help='Faz deploy da aplicação')\ndeploy_parser.add_argument('ambiente', choices=['dev', 'staging', 'prod'], help='Ambiente alvo')\ndeploy_parser.add_argument('--version', help='Versão a implantar')\ndeploy_parser.add_argument('--force', action='store_true', help='Força deploy mesmo com erros')\ndeploy_parser.add_argument('--dry-run', action='store_true', help='Simula deploy sem executar')\n\n# Comando 'backup' com argumentos próprios\nbackup_parser = subparsers.add_parser('backup', parents=[parent_parser], help='Realiza backup')\nbackup_parser.add_argument('destino', help='Destino do backup')\nbackup_parser.add_argument('--compress', choices=['gz', 'bz2', 'zip'], default='gz', help='Tipo de compressão')\nbackup_parser.add_argument('--exclude', nargs='+', help='Arquivos/diretórios a excluir')\n\n# Comando 'restore' com argumentos próprios\nrestore_parser = subparsers.add_parser('restore', parents=[parent_parser], help='Restaura backup')\nrestore_parser.add_argument('backup_file', help='Arquivo de backup')\nrestore_parser.add_argument('--destino', default='.', help='Destino da restauração')\nrestore_parser.add_argument('--overwrite', action='store_true', help='Sobrescrever arquivos existentes')\n\n# Subcomando aninhado para 'db'\ndb_parser = subparsers.add_parser('db', parents=[parent_parser], help='Comandos de banco de dados')\ndb_subparsers = db_parser.add_subparsers(dest='db_comando', required=True, help='Subcomandos do banco')\n\n# Subcomando 'db migrate'\nmigrate_parser = db_subparsers.add_parser('migrate', help='Executa migrações')\nmigrate_parser.add_argument('--revision', help='Versão específica')\nmigrate_parser.add_argument('--fake', action='store_true', help='Fake migration')\n\n# Subcomando 'db seed'\nseed_parser = db_subparsers.add_parser('seed', help='Popula banco com dados')\nseed_parser.add_argument('--tables', nargs='+', help='Tabelas específicas')\nseed_parser.add_argument('--amount', type=int, default=100, help='Número de registros')\n\nargs = parser.parse_args()\n\nprint(f\"📋 Comando: {args.comando}\")\nprint(f\"   Verbosidade: {args.verbose}\")\nprint(f\"   Silencioso: {args.quiet}\")\n\nif args.comando == 'deploy':\n    print(f\"   Ambiente: {args.ambiente}\")\n    if args.version:\n        print(f\"   Versão: {args.version}\")\n    if args.force:\n        print(\"   ⚠️ Forçando deploy\")\n    if args.dry_run:\n        print(\"   🔄 Simulação (dry-run)\")\n\nelif args.comando == 'backup':\n    print(f\"   Destino: {args.destino}\")\n    print(f\"   Compressão: {args.compress}\")\n    if args.exclude:\n        print(f\"   Excluindo: {', '.join(args.exclude)}\")\n\nelif args.comando == 'restore':\n    print(f\"   Backup: {args.backup_file}\")\n    print(f\"   Destino: {args.destino}\")\n    if args.overwrite:\n        print(\"   ⚠️ Sobrescrevendo arquivos\")\n\nelif args.comando == 'db':\n    print(f\"   Subcomando DB: {args.db_comando}\")\n    if args.db_comando == 'migrate':\n        if args.revision:\n            print(f\"   Revisão: {args.revision}\")\n        if args.fake:\n            print(\"   🎭 Fake migration\")\n    elif args.db_comando == 'seed':\n        if args.tables:\n            print(f\"   Tabelas: {', '.join(args.tables)}\")\n        print(f\"   Registros: {args.amount}\")",
+    "cmdOutput": "$ python tool.py deploy prod --version 2.1.0 --force --verbose --no-color\n📋 Comando: deploy\n   Verbosidade: 1\n   Silencioso: False\n   Ambiente: prod\n   Versão: 2.1.0\n   ⚠️ Forçando deploy\n\n$ python tool.py db migrate --revision abc123 --fake -v\n📋 Comando: db\n   Verbosidade: 1\n   Silencioso: False\n   Subcomando DB: migrate\n   Revisão: abc123\n   🎭 Fake migration"
+  }
   ]
 },
 {
   "icon": "🎭",
-  "id": "4",
+  "id": "2",
   "name": "Playwright",
   "category": "Automação",
   "description": "Playwright é uma biblioteca para automação de navegadores que suporta Chromium, Firefox e WebKit com uma API unificada. Permite testes end-to-end, web scraping, automação de formulários e captura de telas com recursos como espera automática, execução em modo headless e suporte a múltiplos contextos.",
@@ -59,7 +84,7 @@
 },
 {
   "icon": "🔍",
-  "id": "5",
+  "id": "3",
   "name": "python-nmap",
   "category": "Rede",
   "description": "python-nmap é um wrapper Python que permite utilizar o scanner de portas Nmap diretamente em scripts, fornecendo uma interface simples para automação de tarefas de reconhecimento de rede. Ele encapsula a execução do Nmap e converte a saída XML em estruturas de dados Python, facilitando a análise de portas abertas, serviços, sistemas operacionais e scripts NSE (Nmap Scripting Engine) .",
@@ -88,7 +113,7 @@
 },
 {
   "icon": "🕸️",
-  "id": "6",
+  "id": "4",
   "name": "Selenium",
   "category": "Automação",
   "description": "Selenium é uma ferramenta poderosa para automação de navegadores web, amplamente utilizada para testes automatizados de aplicações web, web scraping dinâmico e automação de tarefas repetitivas. Ele suporta múltiplos navegadores (Chrome, Firefox, Edge, Safari) e permite interagir com páginas web como um usuário real, incluindo cliques, preenchimento de formulários, execução de JavaScript e captura de screenshots.",
@@ -117,7 +142,7 @@
 },
 {
   "icon": "📊",
-  "id": "7",
+  "id": "5",
   "name": "tqdm",
   "category": "Barra de Progresso",
   "description": "tqdm (do árabe 'taqaddum' que significa 'progresso') é uma biblioteca Python que adiciona barras de progresso instantâneas e personalizáveis a loops e processos longos. Extremamente leve e fácil de usar, ela fornece feedback visual para operações iterativas com estimativa de tempo restante, taxa de processamento e métricas personalizadas.",
@@ -146,7 +171,7 @@
 },
 {
   "icon": "🎨",
-  "id": "8",
+  "id": "6",
   "name": "Rich",
   "category": "Terminal e Interface",
   "description": "Rich é uma biblioteca Python para formatação de texto rico e estilização no terminal. Ela permite adicionar cores, estilos, tabelas, barras de progresso, markdown, syntax highlighting e muito mais, tornando a saída no console mais atraente e informativa.",
@@ -175,7 +200,7 @@
 },
 {
   "icon": "🖱️",
-  "id": "9",
+  "id": "7",
   "name": "Click",
   "category": "Interface de Linha de Comando",
   "description": "Click é uma biblioteca Python para criação de interfaces de linha de comando (CLI) com uma sintaxe simples e decorators. Ela permite criar comandos complexos com argumentos, opções, subcomandos e ajuda automática de forma elegante e com mínimo código boilerplate.",
@@ -204,7 +229,7 @@
 },
 {
   "icon": "📁",
-  "id": "10",
+  "id": "8",
   "name": "Pathlib",
   "category": "Manipulação de Arquivos",
   "description": "Pathlib é um módulo da biblioteca padrão Python que oferece uma abordagem orientada a objetos para manipulação de caminhos de arquivos e diretórios. Ele substitui funções como os.path com uma sintaxe mais intuitiva, suportando múltiplos sistemas operacionais de forma nativa.",
@@ -233,7 +258,7 @@
 },
 {
   "icon": "👁️",
-  "id": "11",
+  "id": "9",
   "name": "Watchdog",
   "category": "Monitoramento de Arquivos",
   "description": "Watchdog é uma biblioteca Python que monitora alterações no sistema de arquivos em tempo real. Ela permite observar diretórios e executar ações personalizadas quando arquivos são criados, modificados, movidos ou excluídos, sendo ideal para automação, recarregamento automático de aplicações e sincronização de arquivos.",
@@ -262,7 +287,7 @@
 },
 {
   "icon": "⏰",
-  "id": "12",
+  "id": "10",
   "name": "Schedule",
   "category": "Automação e Agendamento",
   "description": "Schedule é uma biblioteca Python leve e intuitiva para agendamento de tarefas recorrentes. Com uma sintaxe simples e legível, permite executar funções em intervalos específicos (segundos, minutos, horas, dias) ou em horários determinados, sendo ideal para automações, bots e tarefas periódicas.",
@@ -291,7 +316,7 @@
 },
 {
   "icon": "🐚",
-  "id": "13",
+  "id": "11",
   "name": "Sh",
   "category": "Automação de Sistema",
   "description": "Sh é uma biblioteca Python que permite chamar programas do sistema como se fossem funções nativas. Com uma sintaxe elegante e suporte a pipes, redirecionamentos e tratamento de erros, ela simplifica a execução de comandos shell diretamente no Python.",
@@ -320,7 +345,7 @@
 },
 {
   "icon": "🍲",
-  "id": "14",
+  "id": "12",
   "name": "BeautifulSoup4",
   "category": "Web Scraping",
   "description": "BeautifulSoup4 é uma biblioteca Python para extração de dados de arquivos HTML e XML. Com uma API intuitiva, ela permite navegar, buscar e modificar a árvore de elementos de forma simples, sendo essencial para projetos de web scraping e análise de conteúdo web.",
@@ -349,7 +374,7 @@
 },
 {
   "icon": "🕷️",
-  "id": "15",
+  "id": "13",
   "name": "Scrapy",
   "category": "Web Scraping",
   "description": "Scrapy é um framework Python rápido e extensível para web scraping e extração de dados estruturados. Ele oferece suporte a requisições assíncronas, pipelines de processamento, exportação em múltiplos formatos e é ideal para projetos de scraping em larga escala.",
@@ -378,7 +403,7 @@
 },
 {
   "icon": "⚡",
-  "id": "16",
+  "id": "14",
   "name": "HTTPX",
   "category": "Requisições HTTP",
   "description": "HTTPX é um cliente HTTP completo e moderno para Python, que oferece API síncrona e assíncrona, suporte a HTTP/1.1 e HTTP/2, e recursos avançados como timeouts, redirecionamentos automáticos e autenticação. É uma alternativa poderosa ao Requests com suporte nativo a async/await.",
@@ -407,7 +432,7 @@
 },
 {
   "icon": "🚀",
-  "id": "17",
+  "id": "15",
   "name": "FastAPI",
   "category": "APIs Web",
   "description": "FastAPI é um framework web moderno e rápido para construção de APIs com Python 3.7+. Ele oferece validação automática de dados com Pydantic, documentação interativa automática (Swagger/ReDoc), suporte nativo a async/await e alta performance, sendo ideal para microsserviços e aplicações web.",
@@ -436,7 +461,7 @@
 },
 {
   "icon": "🐼",
-  "id": "18",
+  "id": "16",
   "name": "Pandas",
   "category": "Análise de Dados",
   "description": "Pandas é a biblioteca fundamental para análise e manipulação de dados em Python. Ela fornece estruturas de dados poderosas como DataFrame e Series, permitindo realizar operações de limpeza, transformação, agregação e visualização de dados de forma eficiente e intuitiva.",
@@ -465,7 +490,7 @@
 },
 {
   "icon": "📊",
-  "id": "19",
+  "id": "17",
   "name": "Matplotlib",
   "category": "Visualização de Dados",
   "description": "Matplotlib é a biblioteca fundamental para criação de gráficos estáticos, animados e interativos em Python. Ela oferece controle total sobre todos os aspectos de visualizações, desde gráficos simples até figuras complexas com múltiplos subplots, sendo amplamente utilizada para análise exploratória, publicações científicas e dashboards.",
@@ -494,7 +519,7 @@
 },
 {
   "icon": "🌊",
-  "id": "20",
+  "id": "18",
   "name": "Seaborn",
   "category": "Visualização de Dados",
   "description": "Seaborn é uma biblioteca de visualização de dados baseada no Matplotlib, com interface de alto nível para criar gráficos estatísticos atraentes e informativos. Ela simplifica a criação de gráficos complexos como heatmaps, pairplots, boxplots e regressões, integrando-se perfeitamente com DataFrames do Pandas.",
@@ -523,7 +548,7 @@
 },
 {
   "icon": "🤖",
-  "id": "21",
+  "id": "19",
   "name": "Scikit-learn",
   "category": "Machine Learning",
   "description": "Scikit-learn é a biblioteca mais completa e popular para machine learning em Python. Ela oferece algoritmos para classificação, regressão, clustering, redução de dimensionalidade e pré-processamento, com uma API consistente e documentação extensa, sendo ideal para projetos de ciência de dados e aprendizado de máquina.",
@@ -552,7 +577,7 @@
 },
 {
   "icon": "🔥",
-  "id": "22",
+  "id": "20",
   "name": "PyTorch",
   "category": "Deep Learning",
   "description": "PyTorch é um framework de deep learning flexível e dinâmico que oferece computação tensorial acelerada por GPU e autograd para redes neurais. Com sua API intuitiva e execução baseada em gráficos dinâmicos, é amplamente utilizado em pesquisa acadêmica e produção para desenvolvimento de modelos de inteligência artificial.",
@@ -581,7 +606,7 @@
 },
 {
   "icon": "🧠",
-  "id": "23",
+  "id": "21",
   "name": "TensorFlow",
   "category": "Deep Learning",
   "description": "TensorFlow é uma plataforma completa de machine learning desenvolvida pelo Google, que oferece desde operações tensoriais de baixo nível até APIs de alto nível como Keras. Com suporte a GPU/TPU, deployment em produção e ecossistema robusto, é amplamente utilizado para deep learning, redes neurais e modelos de IA em larga escala.",
@@ -610,7 +635,7 @@
 },
 {
   "icon": "📡",
-  "id": "24",
+  "id": "22",
   "name": "Scapy",
   "category": "Redes e Segurança",
   "description": "Scapy é uma poderosa biblioteca Python para manipulação, envio e captura de pacotes de rede. Ela permite criar, enviar, capturar, analisar e modificar protocolos de rede como TCP, UDP, ICMP, ARP, DNS e muitos outros, sendo amplamente utilizada para testes de segurança, desenvolvimento de ferramentas de rede e análise de tráfego.",
@@ -639,7 +664,7 @@
 },
 {
   "icon": "🔐",
-  "id": "25",
+  "id": "23",
   "name": "Cryptography",
   "category": "Segurança e Criptografia",
   "description": "Cryptography é uma biblioteca Python que fornece primitivas criptográficas de alto e baixo nível. Ela oferece implementações seguras de criptografia simétrica e assimétrica, hashes, KDFs, certificados X.509 e protocolos TLS, sendo ideal para aplicações que exigem segurança robusta e conformidade com padrões.",
@@ -668,7 +693,7 @@
 },
 {
   "icon": "🔒",
-  "id": "26",
+  "id": "24",
   "name": "PyCryptodome",
   "category": "Segurança e Criptografia",
   "description": "PyCryptodome é uma biblioteca criptográfica completa e autossuficiente que oferece implementações seguras de cifras simétricas (AES, DES, ChaCha20), assimétricas (RSA, DSA, ECC), hashes, KDFs, protocolos e utilitários. É uma substituição moderna e mais segura da antiga PyCrypto, com API consistente e suporte a Python 3.",
@@ -697,7 +722,7 @@
 },
 {
   "icon": "🔌",
-  "id": "27",
+  "id": "25",
   "name": "Paramiko",
   "category": "Automação e Redes",
   "description": "Paramiko é uma biblioteca Python que implementa o protocolo SSHv2, permitindo conexões seguras a servidores remotos para execução de comandos, transferência de arquivos (SFTP) e gestão de chaves. É amplamente utilizada em automação de infraestrutura, deploy de aplicações e administração de sistemas remotos.",
@@ -726,7 +751,7 @@
 },
 {
   "icon": "🎭",
-  "id": "28",
+  "id": "26",
   "name": "Faker",
   "category": "Geração de Dados",
   "description": "Faker é uma biblioteca Python para geração de dados falsos realistas em múltiplos idiomas. Ela permite criar nomes, endereços, textos, números, datas, perfis completos e muito mais, sendo essencial para testes, desenvolvimento, populating de bancos de dados e prototipagem.",
@@ -755,7 +780,7 @@
 },
 {
   "icon": "🎨",
-  "id": "29",
+  "id": "27",
   "name": "CustomTkinter",
   "category": "Interface Gráfica",
   "description": "CustomTkinter é uma biblioteca que estende o Tkinter com widgets modernos e estilizados, oferecendo aparência similar a frameworks como Bootstrap. Ela fornece componentes prontos com temas claro/escuro, animações suaves e suporte a cores personalizadas, ideal para criar interfaces gráficas profissionais e atraentes.",
@@ -784,7 +809,7 @@
 },
 {
   "icon": "🪟",
-  "id": "30",
+  "id": "28",
   "name": "PyQt6",
   "category": "Interface Gráfica",
   "description": "PyQt6 é um conjunto de bindings Python para o framework Qt6, permitindo criar aplicações desktop profissionais e multiplataforma. Com uma vasta coleção de widgets, suporte a estilização CSS, signals/slots e ferramentas como Qt Designer, é ideal para desenvolver interfaces ricas, responsivas e com aparência nativa.",
@@ -813,7 +838,7 @@
 },
 {
   "icon": "📱",
-  "id": "31",
+  "id": "29",
   "name": "Kivy",
   "category": "Interface Gráfica",
   "description": "Kivy é um framework Python para desenvolvimento de aplicações multi-touch e interfaces de usuário que rodam em múltiplas plataformas (Windows, macOS, Linux, Android, iOS). Com uma arquitetura baseada em eventos, linguagem KV para design de interfaces e suporte nativo a gestos, é ideal para criar aplicações móveis e desktop com aparência consistente.",
@@ -842,7 +867,7 @@
 },
 {
   "icon": "🌊",
-  "id": "32",
+  "id": "30",
   "name": "Streamlit",
   "category": "Web Apps e Dashboards",
   "description": "Streamlit é um framework Python que permite criar aplicações web interativas e dashboards de dados em minutos, sem necessidade de conhecimento em front-end. Com uma sintaxe simples e reativa, ele transforma scripts Python em apps compartilháveis com widgets interativos, gráficos dinâmicos e deploy integrado.",
@@ -871,7 +896,7 @@
 },
 {
   "icon": "🖼️",
-  "id": "33",
+  "id": "31",
   "name": "Pillow",
   "category": "Processamento de Imagens",
   "description": "Pillow é a biblioteca Python mais popular para processamento de imagens, sendo um fork amigável da PIL (Python Imaging Library). Ela permite abrir, manipular e salvar diversos formatos de imagem, realizar operações como redimensionamento, rotação, filtros, ajustes de cor, sobreposição e criação de imagens do zero.",
@@ -901,7 +926,7 @@
 },
 {
   "icon": "📦",
-  "id": "34",
+  "id": "32",
   "name": "PyInstaller",
   "category": "Empacotamento e Distribuição",
   "description": "PyInstaller é uma ferramenta que empacota aplicações Python em executáveis standalone para Windows, Linux e macOS. Ela analisa automaticamente as dependências do projeto, empacota o interpretador Python e as bibliotecas necessárias, permitindo distribuir aplicações sem exigir que o usuário final tenha Python instalado.",
@@ -930,7 +955,7 @@
 },
 {
   "icon": "📝",
-  "id": "35",
+  "id": "33",
   "name": "Loguru",
   "category": "Logging e Depuração",
   "description": "Loguru é uma biblioteca de logging moderna e intuitiva que simplifica o registro de logs em Python. Com uma API simples, formatação colorida, rotação automática de arquivos, serialização JSON e captura de exceções, ela elimina a complexidade do módulo logging padrão, tornando a depuração e o monitoramento de aplicações muito mais eficientes.",

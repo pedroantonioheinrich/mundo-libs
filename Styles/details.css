@@ -218,9 +218,11 @@ a {
 pre[class*="language-"] {
     margin: 0 !important;
     padding: 0 20px !important;
-    flex: 1;
-    overflow-x: auto;
+    display: block;
+    width: 100%;
+    overflow-x: auto !important;
     background: transparent !important;
+    box-sizing: border-box;
 }
 
 code[class*="language-"] {
@@ -256,6 +258,37 @@ code[class*="language-"] {
     border-radius: 8px;
     color: var(--accent-green);
     font-family: 'Fira Code', monospace;
-    white-space: pre;
     font-size: 0.9rem;
+    white-space: pre;          
+    overflow-x:auto;         
+    max-width: 100%;          
+    display: block;
+
+}
+
+.output-box::-webkit-scrollbar, 
+pre[class*="language-"]::-webkit-scrollbar {
+    height: 6px; /* Barra horizontal fininha */
+}
+
+.output-box::-webkit-scrollbar-track, 
+pre[class*="language-"]::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.output-box::-webkit-scrollbar-thumb, 
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+    background: var(--h1-color); /* Usa o amarelo do seu tema */
+    border-radius: 10px;
+}
+
+
+
+@media (max-width: 900px) {
+    .sidebar {
+        width: 260px; 
+    }
+    .main-content {
+        padding: 40px; 
+    }
 }
