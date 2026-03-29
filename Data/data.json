@@ -789,24 +789,7 @@
   "installCmd": "pip install rich",
   "importCmd": "from rich import print\nfrom rich.console import Console\nfrom rich.table import Table\nfrom rich.progress import track\n\nconsole = Console()",
   "commands": [
-    {
-      "cmdName": "Impressão estilizada básica",
-      "cmdDescription": "Demonstra impressão com cores, estilos e emojis usando a função print do Rich.",
-      "cmdCode": "from rich import print\n\n# Impressão com estilos\nprint(\"[bold red]Erro crítico![/bold red] Verifique o [italic]log[/italic]\")\nprint(\"[green]Sucesso![/green] Operação concluída\")\nprint(\"[bold yellow]⚠️ Aviso:[/bold yellow] Conexão instável\")\n\n# Impressão com emojis e alinhamento\nprint(\"[bold cyan]📦 Processando arquivos...[/bold cyan]\")",
-      "cmdOutput": "Erro crítico! Verifique o log (em vermelho negrito)\nSucesso! Operação concluída (em verde)\n⚠️ Aviso: Conexão instável (em amarelo negrito)\n📦 Processando arquivos... (em ciano negrito)"
-    },
-    {
-      "cmdName": "Tabela formatada",
-      "cmdDescription": "Cria uma tabela estilizada com cabeçalho, cores e alinhamento para exibir dados estruturados.",
-      "cmdCode": "from rich.console import Console\nfrom rich.table import Table\n\nconsole = Console()\n\n# Cria tabela\ntabela = Table(title=\"[bold]Usuários Ativos[/bold]\")\n\n# Adiciona colunas\ntabela.add_column(\"ID\", style=\"cyan\", justify=\"right\")\ntabela.add_column(\"Nome\", style=\"magenta\")\ntabela.add_column(\"Email\", style=\"green\")\ntabela.add_column(\"Status\", justify=\"center\")\n\n# Adiciona linhas\ntabela.add_row(\"1\", \"João Silva\", \"joao@email.com\", \"[green]✓ Ativo[/green]\")\ntabela.add_row(\"2\", \"Maria Santos\", \"maria@email.com\", \"[green]✓ Ativo[/green]\")\ntabela.add_row(\"3\", \"Pedro Costa\", \"pedro@email.com\", \"[red]✗ Inativo[/red]\")\n\nconsole.print(tabela)",
-      "cmdOutput": "┌─────────────────────────────┐\n│      Usuários Ativos        │\n├────┬────────────┬───────────┤\n│ ID │ Nome       │ Email     │\n├────┼────────────┼───────────┤\n│  1 │ João Silva │ joao@...  │\n│  2 │ Maria...   │ maria@... │\n│  3 │ Pedro...   │ pedro@... │\n└────┴────────────┴───────────┘"
-    },
-    {
-      "cmdName": "Barra de progresso com sintaxe highlighting",
-      "cmdDescription": "Combina barra de progresso com realce de sintaxe e formatação avançada.",
-      "cmdCode": "from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn\nfrom rich.console import Console\nfrom rich.syntax import Syntax\nimport time\n\nconsole = Console()\n\n# Exibe código com syntax highlighting\ncodigo = \"\"\"\ndef processar_dados(lista):\n    for item in lista:\n        print(f'Processando {item}')\n    return True\n\"\"\"\nsyntax = Syntax(codigo, \"python\", theme=\"monokai\")\nconsole.print(\"[bold]Código a ser executado:[/bold]\")\nconsole.print(syntax)\n\n# Barra de progresso personalizada\nwith Progress(\n    SpinnerColumn(),\n    TextColumn(\"[progress.description]{task.description}\"),\n    BarColumn(),\n    TextColumn(\"[progress.percentage]{task.percentage:>3.0f}%\"),\n    TimeElapsedColumn(),\n    console=console\n) as progress:\n    task = progress.add_task(\"[cyan]Processando dados...\", total=50)\n    for i in range(50):\n        time.sleep(0.05)\n        progress.update(task, advance=1)\n\nconsole.print(\"[bold green]✓ Processamento concluído![/bold green]\")",
-      "cmdOutput": "Código a ser executado:\n[realce de sintaxe do código Python]\nProcessando dados... ⠋ [████████████░░░░░░░] 68% 00:02"
-    }
+  
   ]
 },
 {

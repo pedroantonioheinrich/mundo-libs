@@ -50,3 +50,10 @@ h2{
 }
 
 
+@media (max-width: 430px) {
+    h2{
+        width: 90%;
+        display: flex;
+    }
+
+}
