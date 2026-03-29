@@ -8,7 +8,9 @@ const searchBarBox = document.querySelector(".search-bar-box")
 
 let tagsArr = []
 let globalData = []
-
+let itemsToShow = 12; 
+let currentIndex = 0;
+let filteredData = [];
 
 async function init(){
     try{
@@ -25,12 +27,18 @@ async function init(){
 }
 
 
-function renderCards(dataToShow) {
-    container.innerHTML = ""
+function renderCards(dataToShow, append = false) {
+    if (!append) {
+        container.innerHTML = "";
+        currentIndex = 0;
+        filteredData = dataToShow;
+    }
+
+    const nextBatch = filteredData.slice(currentIndex, currentIndex + itemsToShow);
     
-    dataToShow.forEach((lib) => {
-        const newCard = document.createElement('div')
-        newCard.classList.add("card-container")
+    nextBatch.forEach((lib) => {
+        const newCard = document.createElement('div');
+        newCard.classList.add("card-container");
         newCard.innerHTML = `
             <div class="card-img">${lib.icon}</div>
             <div class="card-name">${lib.name}</div>
@@ -38,16 +46,26 @@ function renderCards(dataToShow) {
                 <p>${lib.description.slice(0, 140)}...</p>
             </div>
             <div class="card-tag-category">${lib.category}</div>
-        `
+        `;
 
         newCard.addEventListener('click', () => {
-            window.location.href = `details.html?id=${lib.id}`
-        })
+            window.location.href = `details.html?id=${lib.id}`;
+        });
 
-        container.appendChild(newCard)
-    })
+        container.appendChild(newCard);
+    });
+
+    currentIndex += itemsToShow;
 }
 
+window.addEventListener('scroll', () => {
+    
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+        if (currentIndex < filteredData.length) {
+            renderCards(filteredData, true); 
+        }
+    }
+});
 
 
 function setupFilters(data){
