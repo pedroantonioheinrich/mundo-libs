@@ -41,16 +41,19 @@
         background-color: var(--bg-color);
         color: var(--text-main);
         display: flex;
-        min-height: 100vh;
+        min-height: 100dvh;
+        width: 100dvw;
+        transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     main{
         width: 100%;
-        min-height: 100dvh;
+        min-height: fit-content;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
+        transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     footer{
@@ -313,12 +316,15 @@
     /* --- GRID DE CONTEÚDO --- */
     .content {
         width: 90%;
+        min-height: fit-content;
         margin: 0 auto;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 20px;
         padding: 50px 0;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
     }
 
     .card-container {
@@ -332,7 +338,7 @@
         align-items: flex-start;
         border-radius: 10px;
         border: 1px solid var(--border-smooth); 
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);  /* modificado */
+        transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);  /* modificado */
         cursor: pointer;
         padding: 20px;
         text-decoration: none;
@@ -348,7 +354,7 @@
         min-height:fit-content;
         width: 360px;
         margin: 0;
-        transform: scale(1.04); /* modificado */
+        transform: scale(1.01); /* modificado */
         z-index: 20; /* modificado */
     }
 
