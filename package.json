@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "main": "script.js",
-  "scripts": {
- 
-  },
+  "scripts": {},
   "author": "Pedro Heinrich",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
 }
