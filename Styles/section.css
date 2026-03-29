@@ -246,11 +246,19 @@
     .indexed-tags {
         width: 95%;
         gap: 2px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
     }
 
     .tags, .tag-all {
+        display: inline-flex;  
+        width: auto;            
+        padding: 8px 8px;      
+        white-space: nowrap;    
         font-size: 12px;
-        padding: 4px 10px;
+        flex: 0 1 auto;
     }
 
     .how-many-libs {
