@@ -50,20 +50,6 @@ function renderCards(dataToShow) {
 
 
 
-// function renderSearchResult(foundData){
-//     searchBarBox.innerHTML = ""
-//     const ul = document.createElement('ul')
-//     ul.classList.add('ul-search-response')
-//     foundData.forEach((lib)=>{
-//         const li = document.createElement('li')
-//         li.innerHTML = `
-//             <li>${lib.name}</li>
-//         `
-//         ul.appendChild(li)
-//     })
-//     searchBarBox.appendChild(ul)
-// }
-
 function setupFilters(data){
     btnAll.addEventListener('click', () => {
         span.textContent = data.length
@@ -100,30 +86,58 @@ function setupFilters(data){
 
 function setupSearch(data) {
     searchBar.addEventListener("input", (e) => {
-        const searchTerm = e.target.value.toLowerCase().trim()
+        const searchTerm = e.target.value.toLowerCase().trim();
         
+        // Filtra os dados para os cards e para a lista
         const filtered = data.filter(lib => {
             return (
                 lib.name.toLowerCase().includes(searchTerm) || 
-                lib.category.toLowerCase().includes(searchTerm) ||
-                lib.description.toLowerCase().includes(searchTerm)
+                lib.category.toLowerCase().includes(searchTerm)
             );
         });
-           
-        // renderSearchResult(filtered)
+
+        // Atualiza os cards principais
         renderCards(filtered);
-        
         span.textContent = filtered.length;
 
-        if (searchTerm !== "") {
-            document.querySelectorAll('.tags').forEach(t => t.classList.remove('active'));
-            btnAll.classList.remove('active');
+        // Lógica da lista suspensa (searchBarBox)
+        if (searchTerm.length > 0 && filtered.length > 0) {
+            renderSearchDropdown(filtered);
+            searchBarBox.classList.add("visible");
         } else {
-            btnAll.classList.add('active');
+            searchBarBox.classList.remove("visible");
+            // Limpa após a transição de saída para não "piscar"
+            setTimeout(() => { if(!searchBarBox.classList.contains("visible")) searchBarBox.innerHTML = ""; }, 300);
+        }
+    });
+
+    // Fecha a busca ao clicar fora
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".search-container")) {
+            searchBarBox.classList.remove("visible");
         }
     });
 }
 
+function renderSearchDropdown(foundData) {
+    searchBarBox.innerHTML = "";
+    const ul = document.createElement('ul');
+    ul.classList.add('ul-search-response');
+
+    foundData.forEach((lib) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <a href="details.html?id=${lib.id}">
+                <span class="search-icon">${lib.icon}</span>
+                <span class="search-name">${lib.name}</span>
+                <span class="search-cat">${lib.category}</span>
+            </a>
+        `;
+        ul.appendChild(li);
+    });
+
+    searchBarBox.appendChild(ul);
+}
 
 init()
 

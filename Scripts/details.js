@@ -33,33 +33,37 @@ function setupPage(lib) {
     document.getElementById("lib-icon").textContent = lib.icon
     document.getElementById("install-cmd").textContent = lib.installCmd
     
+    // 1. ACESSANDO A DESCRIÇÃO DO PRIMEIRO COMANDO (ESTADO INICIAL)
+    // Usamos lib.commands[0] para pegar o primeiro objeto da lista
+    if (lib.commands && lib.commands.length > 0) {
+        document.getElementById("lib-description").textContent = lib.commands[0].cmdDescription
+    }
 
-    document.getElementById("lib-description").textContent = lib.description
     document.getElementById("import-cmd").textContent = lib.category.toUpperCase()
 
     const menu = document.getElementById("commands-menu")
 
-  
     menu.innerHTML = lib.commands.map((cmd, index) => `
         <li class="command-item ${index === 0 ? 'active' : ''}" data-index="${index}">
             ${cmd.cmdName}
         </li>
     `).join('')
 
-  
     document.querySelectorAll(".command-item").forEach(item => {
         item.addEventListener("click", (e) => {
-     
             document.querySelectorAll(".command-item").forEach(i => i.classList.remove("active"))
             e.currentTarget.classList.add("active")
 
-       
             const index = e.currentTarget.getAttribute("data-index")
-            renderCommand(lib.commands[index])
+            const selectedCmd = lib.commands[index]
+            
+            // 2. ATUALIZA A DESCRIÇÃO AO CLICAR
+            document.getElementById("lib-description").textContent = selectedCmd.cmdDescription
+            
+            renderCommand(selectedCmd)
         })
     })
 
-  
     if (lib.commands.length > 0) {
         renderCommand(lib.commands[0])
     }

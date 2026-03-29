@@ -49,7 +49,7 @@ a {
 /* SIDEBAR (ESQUERDA) */
 .sidebar {
     width: 320px;
-    background-color: var(--elements-color);
+    background-color: #0f141c;
     border-right: 1px solid var(--border-smooth);
     padding: 30px 20px;
     display: flex;
@@ -81,8 +81,6 @@ a {
 }
 
 
-
-
 /* SEÇÕES DA SIDEBAR */
 .setup-nav span, .commands-nav span {
     display: block;
@@ -110,6 +108,30 @@ a {
     color: var(--h1-color);
     font-family: 'Fira Code', monospace;
     font-size: 0.85rem;
+}
+
+#commands-menu {
+    max-height: 60vh;         
+    overflow-y: auto;  
+    overflow-x: auto;     
+    padding-right: 5px;      
+    
+    list-style: none;
+    margin: 0;
+}
+
+#commands-menu::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;            
+}
+
+#commands-menu::-webkit-scrollbar-thumb {
+    background: var(--h1-color); 
+    border-radius: 10px;
+}
+
+#commands-menu::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .command-item {
@@ -293,5 +315,58 @@ pre[class*="language-"]::-webkit-scrollbar-thumb {
     }
     .main-content {
         padding: 40px; 
+    }
+}
+
+@media (max-width: 768px) {
+    /* 1. Container vira coluna */
+    .details-container {
+        flex-direction: column;
+    }
+
+    /* 2. Sidebar vira uma seção de topo */
+    .sidebar {
+        width: 100%;
+        height: auto; /* Para de ocupar a tela toda */
+        position: relative; /* Para de ser fixa na lateral */
+        padding: 20px;
+        gap: 20px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-smooth);
+    }
+
+    /* 3. Menu de comandos em linha (Horizontal Scroll) */
+    #commands-menu {
+        display: flex;
+        max-height: none;
+        overflow-x: auto; /* Rola para os lados no dedão */
+        overflow-y: hidden;
+        gap: 10px;
+        padding-bottom: 10px;
+    }
+
+    .command-item {
+        white-space: nowrap; /* Não quebra linha no nome do comando */
+        margin-bottom: 0;
+    }
+
+    /* 4. Conteúdo principal ocupa tudo */
+    .main-content {
+        padding: 30px 20px;
+        max-width: 100%;
+    }
+
+    #command-title {
+        font-size: 1.8rem; /* Diminui o título para não vazar */
+    }
+
+    /* 5. Ajuste nos cards de código */
+    .code-body {
+        font-size: 0.85rem; /* Fonte um pouco menor para mobile */
+    }
+
+    .line-numbers {
+        width: 35px; /* Reduz a calha dos números */
+        padding-right: 10px;
     }
 }
